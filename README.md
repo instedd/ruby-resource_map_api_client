@@ -4,17 +4,15 @@ TODO: Write a gem description
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add these lines to your application's Gemfile:
 
-    gem 'resource_map_api_client'
+    gem 'rack-oauth2', git: "https://github.com/manastech/rack-oauth2.git", branch: 'master'
+    gem 'alto_guisso', git: "https://bitbucket.org/instedd/alto_guisso.git", branch: 'master'
+    gem 'resource_map_api_client', git: "https://bitbucket.org/instedd/resource_map_api_client.git", branch: 'master'
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install resource_map_api_client
 
 ## Usage
 
