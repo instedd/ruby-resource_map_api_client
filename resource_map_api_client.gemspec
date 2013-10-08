@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'resource_map_api_client/version'
+require 'resource_map/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "resource_map_api_client"
-  spec.version       = ResourceMapApiClient::VERSION
+  spec.version       = ResourceMap::VERSION
   spec.authors       = ["Ary Borenszweig"]
   spec.email         = ["aborenszweig@manas.com.ar"]
   spec.description   = %q{Access the Resource Map API}
@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "memoist"
+  spec.add_dependency "alto_guisso"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
