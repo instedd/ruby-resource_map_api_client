@@ -1,0 +1,3 @@
+module ResourceMap
+  VERSION = "0.0.1"
+end
