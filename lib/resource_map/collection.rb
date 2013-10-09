@@ -105,7 +105,7 @@ module ResourceMap
       end
 
       def create(params)
-        raise 'missing name attribute' unless params.has_key? :name
+        raise 'missing name attribute' unless params.has_key?(:name) || params.has_key?('name')
         result = api.json_post("/collections/#{collection.id}/sites", site: params.to_json)
         Site.new(collection, result)
       end
