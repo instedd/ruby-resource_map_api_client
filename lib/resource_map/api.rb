@@ -9,11 +9,19 @@ module ResourceMap
       BasicAuth.new(username, password, host, https)
     end
 
-    def self.oauth(access_token, host = DefaultHost, https = true)
-      Oauth.new(access_token, host, https)
+    def self.from_authorization_code(authorization_code, redirect_uri, host = DefaultHost, https = true)
+      self.from_oauth_client(host, https, redirect_uri: redirect_uri) do |client|
+        client.authorization_code = authorization_code
+      end
     end
 
     def self.trusted(user_email, host = DefaultHost, https = true)
+      from_oauth_client(host, https) do |client|
+        client.scope = %W(app=#{app_host} user=#{user_email})
+      end
+    end
+
+    def self.from_oauth_client(host, https, options = {})
       if host !~ /\Ahttp:|https:/
         app_host = URI("http://#{host}").host
       else
@@ -22,18 +30,24 @@ module ResourceMap
 
       guisso_uri = URI(Guisso.url)
 
-      client = Rack::OAuth2::Client.new(
+      client = Rack::OAuth2::Client.new(options.merge({
         identifier: Guisso.client_id,
         secret: Guisso.client_secret,
         host: guisso_uri.host,
         port: guisso_uri.port,
         scheme: guisso_uri.scheme,
-      )
-      client.scope = %W(app=#{app_host} user=#{user_email})
+      }))
+      yield client
+
       access_token = client.access_token!
 
       oauth access_token, host, https
     end
+
+    def self.oauth(access_token, host = DefaultHost, https = true)
+      Oauth.new(access_token, host, https)
+    end
+
 
     def use_https=(https)
       @protocol = https ? 'https' : 'http'
