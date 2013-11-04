@@ -21,8 +21,8 @@ module ResourceMap
       @mapping['name']
     end
 
-    def uniq_values
-      h = api.json("/api/collections/#{collection.id}/histogram/#{id}")
+    def uniq_values(filters={})
+      h = api.json("/api/collections/#{collection.id}/histogram/#{id}",(filters.empty? ? nil : {filters: filters}))
       Hash[h.sort]
     end
 

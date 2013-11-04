@@ -48,5 +48,9 @@ module ResourceMap
       end
       api.post("collections/#{collection.id}/sites/#{id}/partial_update.json", {site: hash.to_json})
     end
+
+    def history
+      @history ||= api.json("api/collections/#{@collection.id}/sites/#{@id}/histories")
+    end
   end
 end

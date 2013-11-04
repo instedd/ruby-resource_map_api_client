@@ -2,6 +2,7 @@ module ResourceMap
   class ImportWizard
     def initialize(collection)
       @collection = collection
+      @errors = {}
     end
 
     attr_reader :collection
@@ -23,14 +24,27 @@ module ResourceMap
       api.json_post "collections/#{collection.id}/import_wizard/validate_sites_with_columns", columns: columns_spec.to_json
     end
 
-    def is_column_spec_valid?(columns_spec)
-      validation = validate_sites_with_columns(columns_spec)
+    def sites_count(columns_spec)
+      validate_sites_with_columns(columns_spec)['sites_count']
+    end
 
-      validation['errors'].values.all? { |v| v.nil? || v.empty? }
+    def is_column_spec_valid?(columns_spec)
+      if @errors.empty?
+        validation = validate_sites_with_columns(columns_spec)
+        @errors = validation['errors']
+      end
+      @errors.values.all? { |v| v.nil? || v.empty? }
+    end
+
+    def column_spec_errors(columns_spec)
+      errors = @errors.empty? ? validate_sites_with_columns(columns_spec)['errors'] : @errors
+      # Under data errors are the repetitions which cause the column to be wrong for identifier. Clarification is in the view
+      errors = errors.select {|k,v| !v.nil? && !v.empty? && (k =~ /data_errors/).nil? }
+      errors
     end
 
     def status
-      api.json("collections/#{collection.id}/import_wizard/job_status")['status']
+      api.json("collections/#{collection.id}/import_wizard/job_status")['status'] rescue nil
     end
 
     def execute(columns_spec)

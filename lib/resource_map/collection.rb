@@ -41,6 +41,11 @@ module ResourceMap
     end
     memoize :sites
 
+    def members
+      MembersRelation.new(self)
+    end
+    memoize :members
+
     def fields
       @fields ||= begin
         fields_mapping = api.json("collections/#{id}/fields/mapping")
@@ -77,10 +82,52 @@ module ResourceMap
       api.url("collections?collection_id=#{id}")
     end
 
+    def layers_url
+      api.url("collections/#{id}/layers")
+    end
+
     def import_wizard
       ImportWizard.new self
     end
     memoize :import_wizard
+
+    class MembersRelation
+      attr_reader :collection
+      delegate :api, to: :collection
+
+      def initialize(collection)
+        @collection = collection
+      end
+
+      def all
+        members_data = api.json("collections/#{collection.id}/memberships")
+        members_data.map { |member_hash|
+          Member.new(collection, member_hash)
+        }
+      end
+
+      def find_by_email(email)
+        all.find { |m| m.email == email }
+      end
+
+      def create_by_email(email)
+        member_hash = api.json_post("collections/#{collection.id}/memberships", email: email)
+        Member.new(collection, member_hash)
+      end
+
+      def find_or_create_by_email(email)
+        member = find_by_email(email)
+        if member.nil?
+          member = create_by_email(email)
+        end
+
+        member
+      end
+
+      def invitable(term)
+        api.json("collections/#{collection.id}/memberships/invitable", term: term)
+      end
+    end
 
     class SiteRelation
       attr_reader :collection
@@ -95,9 +142,17 @@ module ResourceMap
         sites_data.map { |site_hash| Site.new(collection, site_hash) }
       end
 
+      def count
+        api.json("api/collections/#{collection.id}")['count']
+      end
+
       def where(attrs)
         sites_data = api.json("api/collections/#{collection.id}", {page: 'all'}.merge(attrs))['sites']
         sites_data.map { |site_hash| Site.new(collection, site_hash) }
+      end
+
+      def count_where(attrs)
+        api.json("api/collections/#{collection.id}", attrs)['count']
       end
 
       def find(site_id)
