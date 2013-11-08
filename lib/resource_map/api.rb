@@ -16,7 +16,7 @@ module ResourceMap
     end
 
     def self.trusted(user_email, host = DefaultHost, https = true)
-      from_oauth_client(host, https) do |client|
+      from_oauth_client(host, https) do |client, app_host|
         client.scope = %W(app=#{app_host} user=#{user_email})
       end
     end
@@ -37,7 +37,7 @@ module ResourceMap
         port: guisso_uri.port,
         scheme: guisso_uri.scheme,
       }))
-      yield client
+      yield client, app_host
 
       access_token = client.access_token!
 
