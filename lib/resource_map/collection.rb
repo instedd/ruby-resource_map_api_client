@@ -129,41 +129,5 @@ module ResourceMap
       end
     end
 
-    class SiteRelation
-      attr_reader :collection
-      delegate :api, to: :collection
-
-      def initialize(collection)
-        @collection = collection
-      end
-
-      def all
-        sites_data = collection.details['sites']
-        sites_data.map { |site_hash| Site.new(collection, site_hash) }
-      end
-
-      def count
-        api.json("api/collections/#{collection.id}")['count']
-      end
-
-      def where(attrs)
-        sites_data = api.json("api/collections/#{collection.id}", {page: 'all'}.merge(attrs))['sites']
-        sites_data.map { |site_hash| Site.new(collection, site_hash) }
-      end
-
-      def count_where(attrs)
-        api.json("api/collections/#{collection.id}", attrs)['count']
-      end
-
-      def find(site_id)
-        Site.new(collection, site_id)
-      end
-
-      def create(params)
-        raise 'missing name attribute' unless params.has_key?(:name) || params.has_key?('name')
-        result = api.json_post("/collections/#{collection.id}/sites", site: params.to_json)
-        Site.new(collection, result)
-      end
-    end
   end
 end

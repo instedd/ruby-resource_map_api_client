@@ -65,10 +65,8 @@ module ResourceMap
       end
 
       if query && !query.empty?
-        p "#{url}?#{URI.encode_www_form(query)}"
-        "#{url}?#{URI.encode_www_form(query)}"
+        "#{url}?#{query.to_query}"
       else
-        p url
         url
       end
     end
