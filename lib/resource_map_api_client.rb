@@ -9,6 +9,7 @@ require "resource_map/field"
 require "resource_map/import_wizard"
 require "resource_map/layer"
 require "resource_map/site"
+require "resource_map/member"
 require "resource_map/version"
 
 module ResourceMap
