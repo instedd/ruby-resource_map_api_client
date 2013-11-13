@@ -86,6 +86,10 @@ module ResourceMap
       api.url("collections/#{id}/layers")
     end
 
+    def import_wizard_url
+      api.url("collections/#{id}/import_wizard")
+    end
+
     def import_wizard
       ImportWizard.new self
     end
