@@ -63,7 +63,7 @@ module ResourceMap
 
     def each
       page_data['sites'].each do |s|
-        yield s
+        yield Site.new(collection, s)
       end
 
       if !is_paged?
