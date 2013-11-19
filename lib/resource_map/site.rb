@@ -25,6 +25,22 @@ module ResourceMap
       data
     end
 
+    def name
+      data['name']
+    end
+
+    def lat
+      data['lat']
+    end
+
+    def long
+      data['long']
+    end
+
+    def properties
+      data['properties']
+    end
+
     def update_property(code, value)
       api.post("sites/#{id}/update_property", {
         es_code: collection.field_by_code(code).id,
@@ -36,7 +52,7 @@ module ResourceMap
       hash.delete :createdAt
       hash.delete :updatedAt
       p = {}
-      hash[:properties].each do |k,v|
+      (hash[:properties] || {}).each do |k,v|
         p[collection.field_by_code(k).id] = v
       end
       hash[:properties] = p
