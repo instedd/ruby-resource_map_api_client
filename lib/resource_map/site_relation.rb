@@ -8,12 +8,13 @@ module ResourceMap
     end
 
     def all
-      sites_data = collection.details['sites']
-      sites_data.map { |site_hash| Site.new(collection, site_hash) }
+      self.where({}).to_a
     end
 
     def count
-      api.json("api/collections/#{collection.id}")['count']
+      # force a little page_size to only some sites are returned.
+      # we just expect the total_count
+      self.where({}).page_size(2).total_count
     end
 
     def where(attrs)
@@ -30,6 +31,7 @@ module ResourceMap
 
     def create(params)
       raise 'missing name attribute' unless params.has_key?(:name) || params.has_key?('name')
+      # TODO params seems to need es_code, should be mapped to field codes
       result = api.json_post("/collections/#{collection.id}/sites", site: params.to_json)
       Site.new(collection, result)
     end
@@ -52,13 +54,15 @@ module ResourceMap
     end
 
     def page(page)
-      @attrs[:page] = page
-      self
+      append_search_attribute page: page
     end
 
     def page_size(page_size)
-      @attrs[:page_size] = page_size
-      self
+      append_search_attribute page_size: page_size
+    end
+
+    def where(attrs)
+      append_search_attribute attrs
     end
 
     def each
@@ -98,7 +102,16 @@ module ResourceMap
       end
     end
 
+    def url
+      api.url("api/collections/#{collection.id}.json", @attrs)
+    end
+
     private
+
+    def append_search_attribute(new_attrs)
+      raise "Invalid operation. SiteResult was created from url" if @attrs.nil?
+      SiteResult.new(collection, @attrs.merge(new_attrs))
+    end
 
     def page_data
       @page_data ||= api.json("api/collections/#{collection.id}", @attrs)
