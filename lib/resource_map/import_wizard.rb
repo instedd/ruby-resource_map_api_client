@@ -6,7 +6,10 @@ module ResourceMap
     end
 
     attr_reader :collection
-    delegate :api, to: :collection
+
+    def api
+      collection.api
+    end
 
     def url
       api.url "collections/#{collection.id}/import_wizard"

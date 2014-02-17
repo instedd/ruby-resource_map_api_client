@@ -5,8 +5,11 @@ module ResourceMap
       @data = data
     end
 
-    delegate :api, to: :collection
     attr_reader :collection
+
+    def api
+      collection.api
+    end
 
     def name
       @data['name']

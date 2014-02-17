@@ -1,11 +1,14 @@
 module ResourceMap
   class Member
     attr_reader :collection
-    delegate :api, to: :collection
 
     def initialize(collection, hash)
       @collection = collection
       @hash = hash
+    end
+
+    def api
+      collection.api
     end
 
     def id

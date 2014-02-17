@@ -97,10 +97,13 @@ module ResourceMap
 
     class MembersRelation
       attr_reader :collection
-      delegate :api, to: :collection
 
       def initialize(collection)
         @collection = collection
+      end
+
+      def api
+        collection.api
       end
 
       def all

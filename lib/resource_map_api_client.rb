@@ -11,6 +11,8 @@ require "resource_map/layer"
 require "resource_map/site"
 require "resource_map/member"
 require "resource_map/version"
+require "json"
+require "rest-client"
 
 module ResourceMap
   # Your code goes here...

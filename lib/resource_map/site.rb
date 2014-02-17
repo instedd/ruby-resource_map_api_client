@@ -15,7 +15,9 @@ module ResourceMap
     attr_reader :collection
     attr_reader :id
 
-    delegate :api, to: :collection
+    def api
+      collection.api
+    end
 
     def data
       @data ||= api.json("api/sites/#{id}")

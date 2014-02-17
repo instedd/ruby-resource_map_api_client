@@ -1,10 +1,13 @@
 module ResourceMap
   class SiteRelation
     attr_reader :collection
-    delegate :api, to: :collection
 
     def initialize(collection)
       @collection = collection
+    end
+
+    def api
+      collection.api
     end
 
     def all
@@ -39,7 +42,6 @@ module ResourceMap
 
   class SiteResult
     attr_reader :collection
-    delegate :api, to: :collection
 
     include Enumerable
 
@@ -51,6 +53,10 @@ module ResourceMap
       else
         @attrs = attrs_or_url
       end
+    end
+
+    def api
+      collection.api
     end
 
     def page(page)

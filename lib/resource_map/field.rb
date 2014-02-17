@@ -5,18 +5,24 @@ module ResourceMap
       @mapping = mapping
     end
 
-    delegate :api, to: :collection
-
     attr_reader :collection
+
+    def api
+      collection.api
+    end
+
     def id
       @mapping['id']
     end
+
     def code
       @mapping['code']
     end
+
     def kind
       @mapping['kind']
     end
+
     def name
       @mapping['name']
     end
