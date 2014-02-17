@@ -4,5 +4,6 @@ source 'https://rubygems.org'
 # gemspec
 
 gem "memoist"
+gem "activesupport"
 gem "rest-client"
 gem 'alto_guisso', git: "https://bitbucket.org/instedd/alto_guisso.git", branch: 'master'

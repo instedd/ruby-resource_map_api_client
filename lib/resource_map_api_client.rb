@@ -13,6 +13,7 @@ require "resource_map/member"
 require "resource_map/version"
 require "json"
 require "rest-client"
+require "active_support/core_ext"
 
 module ResourceMap
   # Your code goes here...
