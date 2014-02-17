@@ -14,7 +14,7 @@ module ResourceMap
     end
 
     def destroy
-      api.delete("/collections/#{id}")
+      api.delete("api/collections/#{id}")
     end
 
     def reload
