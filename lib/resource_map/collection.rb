@@ -32,7 +32,7 @@ module ResourceMap
     attr_reader :id
 
     def name
-      @name || api.json("collections/#{id}")['name']
+      @name || api.json("api/collections/#{id}")['name']
     end
     memoize :name
 
