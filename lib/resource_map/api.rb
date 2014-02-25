@@ -23,9 +23,15 @@ module ResourceMap
 
     def self.from_oauth_client(host, https, options = {})
       if host !~ /\Ahttp:|https:/
-        app_host = URI("http://#{host}").host
+        app_uri = URI("http://#{host}")
       else
-        app_host = URI(host).host
+        app_uri = URI(host)
+      end
+
+      if app_uri.default_port == app_uri.port
+        app_host = app_uri.host
+      else
+        app_host = "#{app_uri.host}:#{app_uri.port}"
       end
 
       guisso_uri = URI(Guisso.url)
