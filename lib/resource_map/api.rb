@@ -101,10 +101,14 @@ module ResourceMap
       u = url 
       q = query
 
-      u, q = u.split("?") if u.index("?") && q == {}
+      if u.index("?") && q == {}
+        u, q = u.split("?")
+      else
+        q = URI.encode_www_form(q)
+      end   
 
       # Send query in the payload if it'd yield a too long URI
-      response = if URI.encode_www_form(q).bytesize > 4000
+      response = if q.bytesize > 4000
         get_with_payload("#{u}.json", q)
       else
         get("#{u}.json", q)
