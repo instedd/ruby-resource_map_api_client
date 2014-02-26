@@ -47,8 +47,8 @@ module ResourceMap
 
     def initialize(collection, attrs_or_url)
       @collection = collection
-      if attrs_or_url.is_a?(String)
-        @page_data = JSON.parse(api.get(attrs_or_url))
+      if attrs_or_url.is_a?(String)        
+        @page_data = api.json(attrs_or_url)
         @attrs = nil
       else
         @attrs = attrs_or_url
