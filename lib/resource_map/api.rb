@@ -103,15 +103,18 @@ module ResourceMap
 
       if u.index("?") && q == {}
         u, q = u.split("?")
+        query_bytesize = q.bytesize
       else
-        q = URI.encode_www_form(q)
-      end   
+        query_bytesize = URI.encode_www_form(q).bytesize
+      end
+
+      u = "#{u}.json" unless u.end_with?(".json")   
 
       # Send query in the payload if it'd yield a too long URI
-      response = if q.bytesize > 4000
-        get_with_payload("#{u}.json", q)
+      response = if query_bytesize > 4000
+        get_with_payload u, q
       else
-        get("#{u}.json", q)
+        get u, q
       end        
 
       JSON.parse response
