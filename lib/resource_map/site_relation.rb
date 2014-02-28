@@ -77,6 +77,7 @@ module ResourceMap
       end
 
       if !is_paged?
+        binding.pry
         current_page = self.next_page
         while current_page
           current_page.each do |s|
@@ -123,8 +124,8 @@ module ResourceMap
       @page_data ||= api.json("api/collections/#{collection.id}", @attrs)
     end
 
-    def is_paged?
-      @attrs == nil || @attrs.include?(:page) || @attrs.include?(:page_size)
+    def is_paged?      
+      @attrs == nil || @attrs.include?(:page)
     end
   end
 end
