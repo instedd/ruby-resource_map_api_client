@@ -77,7 +77,6 @@ module ResourceMap
       end
 
       if !is_paged?
-        binding.pry
         current_page = self.next_page
         while current_page
           current_page.each do |s|
