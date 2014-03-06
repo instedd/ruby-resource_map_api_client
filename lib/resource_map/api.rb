@@ -71,7 +71,11 @@ module ResourceMap
       end
 
       if query && !query.empty?
-        "#{url}?#{query.to_query}"
+        if query.is_a?(Hash)
+          "#{url}?#{query.to_query}"
+        else
+          "#{url}?#{query}"
+        end
       else
         url
       end
