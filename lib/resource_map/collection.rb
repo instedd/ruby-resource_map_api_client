@@ -9,8 +9,7 @@ module ResourceMap
     end
 
     def self.create(api, params)
-      params.reverse_merge! icon: 'default'
-      Collection.new(api, api.json_post('/collections', collection: params)['id'])
+      Collection.new(api, api.json_post('/api/collections', collection: params)['id'])
     end
 
     def destroy
