@@ -10,12 +10,13 @@ module ResourceMap
 
     def execute(method, url, query, payload)
       tmp_dir = "#{Rails.root}/tmp/source_import"
+      FileUtils.mkdir tmp_dir if !File.exists?(tmp_dir)
 
       processed_payload = nil
 
       if payload
         processed_payload = payload
-        
+
         if processed_payload.is_a?(Hash)
           if processed_payload[:file]
             original_filename = "#{Time.now.getutc.to_i}.csv"
