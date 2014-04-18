@@ -81,8 +81,8 @@ module ResourceMap
       end
     end
 
-    def get(url, query = {})
-      process_response(execute(:get, url, query, nil))
+    def get(url, query)
+      process_response(do_get(url, query))
     end
 
     def get_with_payload(url, query = {})
@@ -129,6 +129,10 @@ module ResourceMap
     end
 
     protected
+
+    def do_get(url, query = {})
+      execute(:get, url, query, nil)
+    end
 
     def process_response(response)
       response.body

@@ -31,10 +31,10 @@ module ResourceMap
         end
       end
 
-      response = @token.request method, url(url, query), nil, processed_payload, nil, true
+      response = @token.request method, url(url, query), nil, processed_payload, nil
 
       if method == :post && [301, 302, 307].include?(response.code)
-        self.get(response.headers[:location])
+        self.do_get(response.headers["Location"])
       else
         response
       end
