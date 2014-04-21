@@ -47,13 +47,13 @@ module ResourceMap
 
     def fields
       @fields ||= begin
-        fields_mapping = api.json("collections/#{id}/fields/mapping")
+        fields_mapping = api.json("api/collections/#{id}/fields/mapping")
         fields_mapping.map { |fm| Field.new(self, fm) }
       end
     end
 
     def layers
-      @layers ||= api.json("collections/#{id}/layers").map { |l| Layer.new(self, l) }
+      @layers ||= api.json("api/collections/#{id}/layers").map { |l| Layer.new(self, l) }
     end
 
     def find_or_create_layer_by_name(name)
@@ -61,7 +61,7 @@ module ResourceMap
 
       if res.nil?
         data = { layer: { name: name, ord: layers.length + 1 } }
-        api.post("collections/#{id}/layers", data)
+        api.post("api/collections/#{id}/layers", data)
         @layers = nil
         res = layers.detect { |l| l.name == name }
       end
@@ -106,7 +106,7 @@ module ResourceMap
       end
 
       def all
-        members_data = api.json("collections/#{collection.id}/memberships")
+        members_data = api.json("api/collections/#{collection.id}/memberships")
         members_data.map { |member_hash|
           Member.new(collection, member_hash)
         }
@@ -117,7 +117,7 @@ module ResourceMap
       end
 
       def create_by_email(email)
-        member_hash = api.json_post("collections/#{collection.id}/memberships", email: email)
+        member_hash = api.json_post("api/collections/#{collection.id}/memberships", email: email)
         Member.new(collection, member_hash)
       end
 
@@ -131,7 +131,7 @@ module ResourceMap
       end
 
       def invitable(term)
-        api.json("collections/#{collection.id}/memberships/invitable", term: term)
+        api.json("api/collections/#{collection.id}/memberships/invitable", term: term)
       end
     end
 
