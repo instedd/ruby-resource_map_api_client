@@ -44,7 +44,7 @@ module ResourceMap
     end
 
     def update_property(code, value)
-      api.post("sites/#{id}/update_property", {
+      api.post("api/sites/#{id}/update_property", {
         es_code: collection.field_by_code(code).id,
         value: value
         })
@@ -64,7 +64,11 @@ module ResourceMap
         hash[:lng] = hash[:long]
         hash.delete(:long)
       end
-      api.post("collections/#{collection.id}/sites/#{id}/partial_update.json", {site: hash.to_json})
+      api.post("api/sites/#{id}/partial_update.json", {site: hash.to_json})
+    end
+
+    def destroy
+      api.delete("api/sites/#{id}")
     end
 
     def history
