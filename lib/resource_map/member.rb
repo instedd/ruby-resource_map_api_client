@@ -24,12 +24,12 @@ module ResourceMap
     end
 
     def set_admin!
-      api.post("collections/#{collection.id}/memberships/#{id}/set_admin.json")
+      api.post("api/collections/#{collection.id}/memberships/#{id}/set_admin.json")
     end
 
     def delete!
       # rescue due to 302 Found
-      api.delete("collections/#{collection.id}/memberships/#{id}.json") rescue nil
+      api.delete("api/collections/#{collection.id}/memberships/#{id}.json") rescue nil
     end
   end
 end

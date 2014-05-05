@@ -50,7 +50,7 @@ module ResourceMap
         }
       }
 
-      api.put("collections/#{collection.id}/layers/#{id}", data)
+      api.put("api/collections/#{collection.id}/layers/#{id}", data)
 
       collection.reload
     end
