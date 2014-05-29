@@ -81,6 +81,10 @@ module ResourceMap
       api.url("collections?collection_id=#{id}")
     end
 
+    def csv_url
+      api.url("api/collections/#{id}.csv")
+    end
+
     def layers_url
       api.url("collections/#{id}/layers")
     end
