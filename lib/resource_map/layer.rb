@@ -27,6 +27,15 @@ module ResourceMap
       @data['public']
     end
 
+    # In this version, we just support creating fields with {code: ..., name: ..., kind: ...}
+    def create_fields(fields_attributes)
+      data = { fields: fields_attributes }
+      
+      api.post("api/collections/#{collection.id}/layers/#{id}/fields", data)
+
+      collection.reload
+    end
+
     def ensure_fields(field_attributes)
       fields_data = {}
 
@@ -50,8 +59,7 @@ module ResourceMap
         }
       }
 
-      api.put("api/collections/#{collection.id}/layers/#{id}", data)
-
+      res = api.put("api/collections/#{collection.id}/layers/#{id}", data)
       collection.reload
     end
   end

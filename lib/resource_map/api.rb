@@ -1,4 +1,16 @@
 module ResourceMap
+  class ResourceMapApiError < StandardError
+    attr_reader :message
+    attr_reader :error_code
+    attr_reader :http_status_code
+
+    def initialize(message, error_code, http_status_code)
+      @message = message
+      @error_code = error_code
+      @http_status_code = http_status_code
+    end
+  end
+
   class Api
     extend Memoist
     RestClient.log = 'stdout'
@@ -135,6 +147,11 @@ module ResourceMap
     end
 
     def process_response(response)
+      if response.status >= 400
+        error_obj = ActiveSupport::JSON.decode response.body
+        raise ResourceMapApiError.new(message: error_obj["message"], error_code: error_obj["error_code"], http_status_code: response.status)
+      end
+
       response.body
     end
   end
