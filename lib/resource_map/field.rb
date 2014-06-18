@@ -33,7 +33,8 @@ module ResourceMap
     end
 
     def metadata
-      @metadata ||= api.json("/collections/#{collection.id}/fields/#{id}")
+      binding.pry
+      @metadata ||= api.json("/en/collections/#{collection.id}/fields/#{id}")
     end
 
     def hierarchy

@@ -78,7 +78,7 @@ module ResourceMap
     end
 
     def show_url
-      api.url("collections?collection_id=#{id}")
+      api.url("en/collections?collection_id=#{id}")
     end
 
     def csv_url
@@ -86,11 +86,11 @@ module ResourceMap
     end
 
     def layers_url
-      api.url("collections/#{id}/layers")
+      api.url("en/collections/#{id}/layers")
     end
 
     def import_wizard_url
-      api.url("collections/#{id}/import_wizard")
+      api.url("en/collections/#{id}/import_wizard")
     end
 
     def import_wizard

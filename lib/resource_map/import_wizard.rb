@@ -12,19 +12,19 @@ module ResourceMap
     end
 
     def url
-      api.url "collections/#{collection.id}/import_wizard"
+      api.url "en/collections/#{collection.id}/import_wizard"
     end
 
     def upload(file)
-      api.post "collections/#{collection.id}/import_wizard/upload_csv", file: file
+      api.post "en/collections/#{collection.id}/import_wizard/upload_csv", file: file
     end
 
     def guess_columns_spec
-      api.json "collections/#{collection.id}/import_wizard/guess_columns_spec"
+      api.json "en/collections/#{collection.id}/import_wizard/guess_columns_spec"
     end
 
     def validate_sites_with_columns(columns_spec)
-      api.json_post "collections/#{collection.id}/import_wizard/validate_sites_with_columns", columns: columns_spec.to_json
+      api.json_post "en/collections/#{collection.id}/import_wizard/validate_sites_with_columns", columns: columns_spec.to_json
     end
 
     def sites_count(columns_spec)
@@ -47,7 +47,7 @@ module ResourceMap
     end
 
     def status
-      api.json("collections/#{collection.id}/import_wizard/job_status")['status'] rescue nil
+      api.json("en/collections/#{collection.id}/import_wizard/job_status")['status'] rescue nil
     end
 
     def execute(columns_spec)
@@ -55,7 +55,7 @@ module ResourceMap
       columns_spec.each_with_index do |c, i|
         h[i.to_s] = c
       end
-      api.post "collections/#{collection.id}/import_wizard/execute", columns: h
+      api.post "en/collections/#{collection.id}/import_wizard/execute", columns: h
     end
   end
 end
