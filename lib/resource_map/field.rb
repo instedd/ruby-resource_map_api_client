@@ -33,7 +33,6 @@ module ResourceMap
     end
 
     def metadata
-      binding.pry
       @metadata ||= api.json("/en/collections/#{collection.id}/fields/#{id}")
     end
 
