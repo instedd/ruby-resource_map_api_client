@@ -3,11 +3,26 @@ module ResourceMap
     attr_reader :message
     attr_reader :error_code
     attr_reader :http_status_code
+    
+    def initialize(opts)
+      @message = opts[:message] || "Resource Map API exception"
+      @error_code = opts[:error_code] || 0
+      @http_status_code = opts[:http_status_code] || 0      
+    end
+  end
 
-    def initialize(message, error_code, http_status_code)
-      @message = message
-      @error_code = error_code
-      @http_status_code = http_status_code
+  class SiteValidationError < ResourceMapApiError
+    attr_reader :error_object
+
+    def initialize(opts)
+      super(opts)
+      @error_object = opts[:error_object] || {}
+    end
+
+    def errors_by_property_code
+      return {} if @error_object.nil? || @error_object["properties"].nil?
+
+      @error_object["properties"].map {|error| { field_id: error.keys.first, message: error[error.keys.first] } }
     end
   end
 
@@ -149,7 +164,12 @@ module ResourceMap
     def process_response(response)
       if response.status >= 400
         error_obj = ActiveSupport::JSON.decode response.body
-        raise ResourceMapApiError.new(message: error_obj["message"], error_code: error_obj["error_code"], http_status_code: response.status)
+
+        if error_obj["error_object"]
+          raise SiteValidationError.new(message: error_obj["message"], error_code: error_obj["error_code"], http_status_code: response.status, error_object: error_obj["error_object"])
+        else
+          raise ResourceMapApiError.new(message: error_obj["message"], error_code: error_obj["error_code"], http_status_code: response.status)
+        end
       end
 
       response.body
