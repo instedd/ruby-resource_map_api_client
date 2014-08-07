@@ -2,10 +2,11 @@ module ResourceMap
   class Collection
     extend Memoist
 
-    def initialize(api, id, name = nil)
+    def initialize(api, id, name = nil, site_count = nil)
       @api = api
       @id = id
       @name = name
+      @site_count = site_count
     end
 
     def self.create(api, params)
@@ -29,6 +30,12 @@ module ResourceMap
 
     attr_reader :api
     attr_reader :id
+    attr_reader :site_count
+
+    def site_count
+      @site_count || api.json("api/collections/#{id}")['count']
+    end
+    memoize :site_count
 
     def name
       @name || api.json("api/collections/#{id}")['name']
