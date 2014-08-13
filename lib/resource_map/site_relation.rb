@@ -64,19 +64,26 @@ module ResourceMap
     end
 
     def page_size(page_size)
-      append_search_attribute page_size: page_size
+      new_attrs = { page_size: page_size }
+
+      #page_size doesn't really play well without a page param, so we default to the first page if the attr isn't provided
+      new_attrs[:page] = 1 unless @attrs.include?(:page) 
+
+      append_search_attribute new_attrs
     end
 
     def where(attrs)
       append_search_attribute attrs
     end
 
-    def each
+    def each(seamless_paging=false)
+      #binding.pry
+
       page_data['sites'].each do |s|
         yield Site.new(collection, s)
       end
 
-      if !is_paged?
+      if !is_paged? || seamless_paging
         current_page = self.next_page
         while current_page
           current_page.each do |s|
