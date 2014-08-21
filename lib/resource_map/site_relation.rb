@@ -76,6 +76,14 @@ module ResourceMap
       append_search_attribute attrs
     end
 
+    def all
+      r = []
+      self.each(true) do |e|
+        r.push e
+      end
+      r
+    end
+
     def each(seamless_paging=false)
       #binding.pry
 
