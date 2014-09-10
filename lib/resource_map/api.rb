@@ -28,7 +28,7 @@ module ResourceMap
 
   class Api
     extend Memoist
-    RestClient.log = 'stdout'
+    # RestClient.log = 'stdout'
 
     DefaultHost = "resourcemap.instedd.org"
 
@@ -129,7 +129,7 @@ module ResourceMap
     end
 
     def json(url, query = {})
-      u = url 
+      u = url
       q = query
 
       if u.index("?") && q == {}
@@ -139,14 +139,14 @@ module ResourceMap
         query_bytesize = URI.encode_www_form(q).bytesize
       end
 
-      u = "#{u}.json" unless u.end_with?(".json")   
+      u = "#{u}.json" unless u.end_with?(".json")
 
       # Send query in the payload if it'd yield a too long URI
       response = if query_bytesize > 4000
         get_with_payload u, q
       else
         get u, q
-      end        
+      end
 
       JSON.parse response
     end
