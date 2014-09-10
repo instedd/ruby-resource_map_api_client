@@ -67,7 +67,7 @@ module ResourceMap
       new_attrs = { page_size: page_size }
 
       #page_size doesn't really play well without a page param, so we default to the first page if the attr isn't provided
-      new_attrs[:page] = 1 unless @attrs.include?(:page) 
+      new_attrs[:page] = 1 unless @attrs.include?(:page)
 
       append_search_attribute new_attrs
     end
@@ -85,8 +85,6 @@ module ResourceMap
     end
 
     def each(seamless_paging=false)
-      #binding.pry
-
       page_data['sites'].each do |s|
         yield Site.new(collection, s)
       end
@@ -104,6 +102,10 @@ module ResourceMap
 
     def total_count
       page_data['count']
+    end
+
+    def update(update_attrs)
+      api.json_post("api/collections/#{collection.id}/update_sites", @attrs.merge({updates: update_attrs}))
     end
 
     def next_page

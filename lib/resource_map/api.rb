@@ -3,11 +3,11 @@ module ResourceMap
     attr_reader :message
     attr_reader :error_code
     attr_reader :http_status_code
-    
+
     def initialize(opts)
       @message = opts[:message] || "Resource Map API exception"
       @error_code = opts[:error_code] || 0
-      @http_status_code = opts[:http_status_code] || 0      
+      @http_status_code = opts[:http_status_code] || 0
     end
   end
 
@@ -152,7 +152,8 @@ module ResourceMap
     end
 
     def json_post(url, query = {})
-      JSON.parse post("#{url}.json", query)
+      response = post("#{url}.json", query)
+      JSON.parse response unless response.blank?
     end
 
     protected
