@@ -35,7 +35,7 @@ module ResourceMap
     def create(params)
       raise 'missing name attribute' unless params.has_key?(:name) || params.has_key?('name')
       # TODO params seems to need es_code, should be mapped to field codes
-      result = api.json_post("api/collections/#{collection.id}/sites", site: params.to_json)
+      result = api.post("api/collections/#{collection.id}/sites.json", site: params.to_json)
       Site.new(collection, result)
     end
   end
@@ -48,7 +48,7 @@ module ResourceMap
     def initialize(collection, attrs_or_url)
       @collection = collection
       if attrs_or_url.is_a?(String)
-        @page_data = api.json(attrs_or_url)
+        @page_data = api.json("#{attrs_or_url}.json")
         @attrs = nil
       else
         @attrs = attrs_or_url
@@ -105,7 +105,7 @@ module ResourceMap
     end
 
     def update(update_attrs)
-      api.json_post("api/collections/#{collection.id}/update_sites", @attrs.merge({updates: update_attrs}))
+      api.post("api/collections/#{collection.id}/update_sites.json", @attrs.merge({updates: update_attrs}))
     end
 
     def next_page
@@ -137,7 +137,7 @@ module ResourceMap
     end
 
     def page_data
-      @page_data ||= api.json("api/collections/#{collection.id}", @attrs)
+      @page_data ||= api.json("api/collections/#{collection.id}.json", @attrs)
     end
 
     def is_paged?

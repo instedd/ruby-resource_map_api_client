@@ -10,7 +10,7 @@ module ResourceMap
     end
 
     def self.create(api, params)
-      Collection.new(api, api.json_post('/api/collections', collection: params)['id'])
+      Collection.new(api, api.post('/api/collections.json', collection: params)['id'])
     end
 
     def destroy
@@ -24,7 +24,7 @@ module ResourceMap
     end
 
     def details
-      api.json("api/collections/#{id}", page: 'all')
+      api.json("api/collections/#{id}.json", page: 'all')
     end
     memoize :details
 
@@ -33,12 +33,12 @@ module ResourceMap
     attr_reader :site_count
 
     def site_count
-      @site_count || api.json("api/collections/#{id}")['count']
+      @site_count || api.json("api/collections/#{id}.json")['count']
     end
     memoize :site_count
 
     def name
-      @name || api.json("api/collections/#{id}")['name']
+      @name || api.json("api/collections/#{id}.json")['name']
     end
     memoize :name
 
@@ -54,13 +54,13 @@ module ResourceMap
 
     def fields
       @fields ||= begin
-        fields_mapping = api.json("api/collections/#{id}/fields/mapping")
+        fields_mapping = api.json("api/collections/#{id}/fields/mapping.json")
         fields_mapping.map { |fm| Field.new(self, fm) }
       end
     end
 
     def layers
-      @layers ||= api.json("api/collections/#{id}/layers").map { |l| Layer.new(self, l) }
+      @layers ||= api.json("api/collections/#{id}/layers.json").map { |l| Layer.new(self, l) }
     end
 
     def find_or_create_layer_by_name(name)
@@ -117,7 +117,7 @@ module ResourceMap
       end
 
       def all
-        members_data = api.json("api/collections/#{collection.id}/memberships")
+        members_data = api.json("api/collections/#{collection.id}/memberships.json")
         members_data.map { |member_hash|
           Member.new(collection, member_hash)
         }
@@ -128,7 +128,7 @@ module ResourceMap
       end
 
       def create_by_email(email)
-        member_hash = api.json_post("api/collections/#{collection.id}/memberships", email: email)
+        member_hash = api.post("api/collections/#{collection.id}/memberships.json", email: email)
         Member.new(collection, member_hash)
       end
 
@@ -142,7 +142,7 @@ module ResourceMap
       end
 
       def invitable(term)
-        api.json("api/collections/#{collection.id}/memberships/invitable", term: term)
+        api.json("api/collections/#{collection.id}/memberships/invitable.json", term: term)
       end
     end
 

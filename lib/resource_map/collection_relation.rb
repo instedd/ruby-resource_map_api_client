@@ -7,7 +7,7 @@ module ResourceMap
     attr_reader :api
 
     def all
-      api.json("/api/collections").map { |h| build_collection(h['id'].to_i, h['name'], h['count']) }
+      api.json("/api/collections.json").map { |h| build_collection(h['id'].to_i, h['name'], h['count']) }
     end
 
     def create(params)

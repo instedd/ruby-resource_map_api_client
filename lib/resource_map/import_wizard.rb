@@ -20,11 +20,11 @@ module ResourceMap
     end
 
     def guess_columns_spec
-      api.json "en/collections/#{collection.id}/import_wizard/guess_columns_spec"
+      api.json "en/collections/#{collection.id}/import_wizard/guess_columns_spec.json"
     end
 
     def validate_sites_with_columns(columns_spec)
-      api.json_post "en/collections/#{collection.id}/import_wizard/validate_sites_with_columns", columns: columns_spec.to_json
+      api.post "en/collections/#{collection.id}/import_wizard/validate_sites_with_columns.json", columns: columns_spec.to_json
     end
 
     def sites_count(columns_spec)
@@ -47,7 +47,7 @@ module ResourceMap
     end
 
     def status
-      api.json("en/collections/#{collection.id}/import_wizard/job_status")['status'] rescue nil
+      api.json("en/collections/#{collection.id}/import_wizard/job_status.json")['status'] rescue nil
     end
 
     def execute(columns_spec)

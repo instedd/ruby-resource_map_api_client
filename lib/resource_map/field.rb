@@ -28,12 +28,12 @@ module ResourceMap
     end
 
     def uniq_values(filters={})
-      h = api.json("/api/collections/#{collection.id}/histogram/#{id}",(filters.empty? ? nil : {filters: filters.to_json}))
+      h = api.json("/api/collections/#{collection.id}/histogram/#{id}.json",(filters.empty? ? nil : {filters: filters.to_json}))
       Hash[h.sort]
     end
 
     def metadata
-      @metadata ||= api.json("/en/collections/#{collection.id}/fields/#{id}")
+      @metadata ||= api.json("/en/collections/#{collection.id}/fields/#{id}.json")
     end
 
     def hierarchy

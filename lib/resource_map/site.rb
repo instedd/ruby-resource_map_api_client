@@ -20,7 +20,7 @@ module ResourceMap
     end
 
     def data
-      @data ||= api.json("api/sites/#{id}")
+      @data ||= api.json("api/sites/#{id}.json")
     end
 
     def to_hash
@@ -72,7 +72,7 @@ module ResourceMap
     end
 
     def history
-      @history ||= api.json("api/collections/#{@collection.id}/sites/#{@id}/histories")
+      @history ||= api.json("api/collections/#{@collection.id}/sites/#{@id}/histories.json")
     end
   end
 end
