@@ -6,13 +6,17 @@ TODO: Write a gem description
 
 Add these lines to your application's Gemfile:
 
-    gem 'rack-oauth2', git: "https://github.com/manastech/rack-oauth2.git", branch: 'master'
-    gem 'alto_guisso', git: "https://bitbucket.org/instedd/alto_guisso.git", branch: 'master'
-    gem 'resource_map_api_client', git: "https://bitbucket.org/instedd/resource_map_api_client.git", branch: 'master'
+```
+gem 'rest-client'
+gem 'alto_guisso', github: "instedd/alto_guisso", branch: 'master'
+gem 'resource_map_api_client', github: "instedd/ruby-resource_map_api_client", branch: 'master'
+```
 
 And then execute:
 
-    $ bundle
+```
+$ bundle
+```
 
 ## Usage
 
