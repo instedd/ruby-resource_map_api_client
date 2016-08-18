@@ -10,7 +10,8 @@ module ResourceMap
     end
 
     def self.create(api, params)
-      Collection.new(api, api.post('/api/collections.json', collection: params)['id'])
+      json_response = ActiveSupport::JSON.decode api.post('/api/collections.json', collection: params)
+      Collection.new(api, json_response['id'])
     end
 
     def destroy
